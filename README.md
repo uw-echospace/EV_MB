@@ -1,1 +1,1 @@
-# EV_MB
+# BATMO: Bat Acoustic Tracking and Meteorological Observations
