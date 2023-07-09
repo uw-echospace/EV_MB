@@ -93,3 +93,5 @@ the closest available was at South Park, an area of South Seattle near the Museu
 After meeting with David Warren, the search was finally concluded. 
 
 The data we needed was available through their [time series plots tool](http://www-k12.atmos.washington.edu/k12/grayskies/nw_weather.html).
+A script to pull data will be added as it is available
+
