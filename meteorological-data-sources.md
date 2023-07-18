@@ -70,4 +70,5 @@ workbook.close()
 
 print(f'CSV and XLSX files saved at: {csv_file_path}, {xlsx_file_path}')
 ```
-Although this code successfully pulled weather data points for temperature, humidity, wind speed,  
+Although this code successfully pulled weather data points for temperature, precipitation, humidity, lunar phase, and wind speed, the documentation on NWS was somewhat cryptic. 
+Writing scripts to access the amount of data points that I needed, and then somehow verifying seemed like a monumental task not suitable for me coding skills and the amount of time I have to complete this project (<8 weeks). )
