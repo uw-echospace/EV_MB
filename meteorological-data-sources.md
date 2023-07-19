@@ -96,7 +96,7 @@ The data we needed was available through their [time series plots tool](http://w
 
 This script will pull data from UWA station hourly and update the .csv file: 
 
-
+```python
 import csv
 import requests
 import datetime
@@ -154,5 +154,5 @@ schedule.every().hour.do(job)
 while True:
     schedule.run_pending()
     time.sleep(1)
-
+```
 
