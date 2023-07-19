@@ -1,4 +1,3 @@
-
 # Collection of Meteorological Observational Data
 
 There are many places and ways to collect meterogolocial data. For this project, a few considerations were 
