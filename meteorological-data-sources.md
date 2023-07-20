@@ -75,7 +75,7 @@ Writing scripts to access the amount of data points that I needed, and then some
 
 ## Oikolab
 
-[Oikolab](oikolab.com) offers a simple way to download historical meterological data in the form of a .csv file. Their *About Me* page states that
+[Oikolab](https://oikolab.com) offers a simple way to download historical meterological data in the form of a .csv file. Their *About Me* page states that
 they pull "raw data from primary sources such as ECWMF and NOAA."
 According to their documentation page, they use ERA5 (climate reanalysis software produced by [ECMWF](https://climate.copernicus.eu/climate-reanalysis))
 to "combine vast observations from satellites, aircraft, land and sea based weather sensors with atmospheric models to generate consistent time series of multiple climate variables."
@@ -84,7 +84,7 @@ This appears to be a great resource. However, verification was desired, which re
 
 ## Meteostat 
 
-Meteostat is a python package available on github. It appears to be a powerful tool to pull weather data from various stations. 
+Meteostat is a python package available on GitHub. It appears to be a powerful tool to pull weather data from various stations. 
 After working with their documentation to pull data, it looked promising. However, upon further investigation of the station said data was pulled from, 
 the closest available was at South Park, an area of South Seattle near the Museum of Flight. Because this was not close enough to UBNA, this data was deemed unusable. 
 
@@ -155,4 +155,3 @@ while True:
     schedule.run_pending()
     time.sleep(1)
 ```
-
