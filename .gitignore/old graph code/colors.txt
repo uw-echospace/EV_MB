@@ -1,0 +1,44 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+
+# Read the CSV file into a DataFrame, skipping the header row
+data = pd.read_csv('2023-uwa.csv', skiprows=1)
+
+# Convert 'Date' column to datetime format
+data['Date'] = pd.to_datetime(data['Date'])
+
+# Convert Fahrenheit to Celsius
+data['Temperature'] = (data['Temperature'] - 32) * 5/9
+
+# Set up the plot
+fig, axs = plt.subplots(5, 5, figsize=(12, 12))
+
+# Format the x-axis to display month names
+months = mdates.MonthLocator()  # Locate the months on the x-axis
+month_fmt = mdates.DateFormatter('%B')  # Format the month labels
+
+# Iterate over colormap options
+colormaps = plt.cm.datad.keys()
+colormap_names = np.array(list(colormaps)).reshape(())
+for i in range(5):
+    for j in range(5):
+        ax = axs[i, j]
+        ax.xaxis.set_major_locator(months)
+        ax.xaxis.set_major_formatter(month_fmt)
+        cmap = plt.cm.get_cmap(colormap_names[i, j])
+        sc = ax.scatter(data['Date'], data['Temperature'], c=data['Temperature'], cmap=cmap, alpha=0.7)
+        ax.set_ylabel('Temperature (°C)')
+        ax.set_title(colormap_names[i, j])
+
+# Add a single colorbar for all subplots
+cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])
+cbar = fig.colorbar(sc, cax=cbar_ax)
+cbar.set_label('Temperature (°C)')
+
+# Adjust the layout and spacing
+plt.tight_layout()
+
+# Display the plot
+plt.show()

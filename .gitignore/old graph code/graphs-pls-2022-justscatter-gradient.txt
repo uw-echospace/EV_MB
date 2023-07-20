@@ -1,0 +1,41 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+
+# Read the CSV file into a DataFrame, skipping the header row
+data = pd.read_csv('2022-uwa.csv', skiprows=1)
+
+# Convert 'Date' column to datetime format
+data['Date'] = pd.to_datetime(data['Date'])
+
+# Convert Fahrenheit to Celsius
+data['Temperature'] = (data['Temperature'] - 32) * 5/9
+
+# Set up the plot
+fig, (ax1) = plt.subplots(1, figsize=(8, 10))
+
+# Format the x-axis to display month names
+months = mdates.MonthLocator()  # Locate the months on the x-axis
+month_fmt = mdates.DateFormatter('%B')  # Format the month labels
+ax1.xaxis.set_major_locator(months)
+ax1.xaxis.set_major_formatter(month_fmt)
+
+# Create temperature gradient colormap
+cmap = plt.cm.get_cmap('turbo')
+
+# Plot the scatter plot with temperature gradient colors and adjusted opacity
+sc = ax1.scatter(data['Date'], data['Temperature'], c=data['Temperature'], cmap=cmap, alpha=0.7)  # Adjust the alpha value as desired
+ax1.set_ylabel('Temperature (°C)')
+ax1.set_title('Temperature Scatter Plot')
+
+# Add colorbar
+cbar = fig.colorbar(sc, ax=ax1)
+cbar.set_label('Temperature (°C)')
+
+# Adjust the layout and spacing
+plt.tight_layout()
+
+# Display the plot
+plt.show()
+

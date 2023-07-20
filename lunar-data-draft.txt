@@ -1,0 +1,69 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+def map_moon_phase(phase):
+    # Create a mapping dictionary for moon phases
+    phase_mapping = {
+        'Full Moon': 1,
+        'Waning Gibbous': 0.75,
+        'Last Quarter': 0.5,
+        'Waning Crescent': 0.25,
+        'New Moon': 0,
+        'Waxing Crescent': -0.25,
+        'First Quarter': -0.5,
+        'Waxing Gibbous': -0.75
+    }
+    return phase_mapping.get(phase, np.nan)
+
+def plot_sine_graph(data_frame, start_date, end_date):
+    dates = pd.to_datetime(data_frame['Date'], format='%Y %b %d')
+    lunar_data = data_frame['Moon Phase'].apply(map_moon_phase)
+
+    # Filter data for the specified date range
+    mask = (dates >= start_date) & (dates <= end_date)
+    dates = dates[mask]
+    lunar_data = lunar_data[mask]
+
+    # Drop rows with NaN (if any)
+    data_frame = data_frame.dropna(subset=['Moon Phase'])
+
+    # Normalize the lunar data to the range [-π, π] for a sine-like graph
+    normalized_lunar_data = (lunar_data - lunar_data.min()) / (lunar_data.max() - lunar_data.min()) * np.pi - np.pi/2
+
+    # Plotting both sine graphs in a single subplot
+    plt.figure(figsize=(10, 12))
+
+    # 2022 graph (on top)
+    plt.subplot(2, 1, 1)
+    plt.plot(dates, np.sin(normalized_lunar_data * np.pi), label='Moon Phase (Sine-Type)')
+    plt.xlabel('Date')
+    plt.ylabel('Moon Phase')
+    plt.title('2022 Lunar Data')
+    plt.legend()
+    plt.grid(True)
+    plt.yticks([-np.pi/2, -np.pi/4, 0, np.pi/4, np.pi/2], ['Waxing Gibbous', 'First Quarter', 'New Moon', 'Last Quarter', 'Waning Gibbous'])
+
+    # 2023 graph (below)
+    plt.subplot(2, 1, 2)
+    plt.plot(dates, np.sin(normalized_lunar_data * np.pi), label='Moon Phase (Sine-Type)')
+    plt.xlabel('Date')
+    plt.ylabel('Moon Phase')
+    plt.title('2023 Lunar Data')
+    plt.legend()
+    plt.grid(True)
+    plt.yticks([-np.pi/2, -np.pi/4, 0, np.pi/4, np.pi/2], ['Waxing Gibbous', 'First Quarter', 'New Moon', 'Last Quarter', 'Waning Gibbous'])
+
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == '__main__':
+    file_path = 'LUNAR.xlsx'
+    try:
+        df = pd.read_excel(file_path)  # Use pd.read_excel to read Excel files
+        plot_sine_graph(df, start_date='2022-06-01', end_date='2022-11-01')
+        plot_sine_graph(df, start_date='2023-06-01', end_date='2023-11-01')
+    except FileNotFoundError:
+        print(f"Could not find the file '{file_path}'. Please make sure the file exists.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
