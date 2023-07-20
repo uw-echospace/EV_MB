@@ -32,7 +32,7 @@ def fetch_data():
         data = response.text
 
         # Write the data to a CSV file
-        with open(csv_file, "a", newline="") as file:
+        with open(csv_file, "w", newline="") as file:
             writer = csv.writer(file)
             for row in data.splitlines():
                 split_data = row.split(",")

@@ -1,0 +1,94 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
+import numpy as np
+
+# Read the CSV file into a DataFrame, skipping the header row
+data_2023 = pd.read_csv('2023-uwa.csv', skiprows=1)
+
+# Convert 'Date' column to datetime format
+data_2023['Date'] = pd.to_datetime(data_2023['Date'])
+
+# Convert Fahrenheit to Celsius
+data_2023['Temperature'] = (data_2023['Temperature'] - 32) * 5/9
+
+# Set up the plot
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 10), sharex=True)
+
+# Create temperature gradient colormap
+cmap = plt.cm.get_cmap('turbo')
+
+# Calculate statistics per date for 2023 data
+daily_stats_2023 = data_2023.groupby(data_2023['Date'].dt.date)['Temperature'].agg(['mean', 'median', lambda x: np.percentile(x, 25), lambda x: np.percentile(x, 75)])
+daily_stats_2023.columns = ['Mean', 'Median', '25th Percentile', '75th Percentile']
+
+# Plot the scatter plot with temperature gradient colors and adjusted opacity for 2023 data
+sc_2023 = ax1.scatter(data_2023['Date'], data_2023['Temperature'], c=data_2023['Temperature'], cmap=cmap, alpha=0.7)
+ax1.set_ylabel('Temperature (°C)')
+ax1.set_title('2023 UWA Temperature')
+
+# Plot trendlines per date for 2023 data
+ax1.plot(daily_stats_2023.index, daily_stats_2023['Mean'], color='red', linestyle='--', label='Mean')
+ax1.plot(daily_stats_2023.index, daily_stats_2023['Median'], color='green', linestyle='--', label='Median')
+ax1.plot(daily_stats_2023.index, daily_stats_2023['25th Percentile'], color='blue', linestyle='--', label='25th Percentile')
+ax1.plot(daily_stats_2023.index, daily_stats_2023['75th Percentile'], color='orange', linestyle='--', label='75th Percentile')
+
+# Add legend for 2023 data
+ax1.legend()
+
+# Set the x-axis limits and format for 2023 data
+start_date_2023 = pd.to_datetime('2023-06-01')
+end_date_2023 = pd.to_datetime('2023-11-01')
+ax1.set_xlim(start_date_2023, end_date_2023)
+ax1.xaxis.set_major_locator(mdates.MonthLocator())
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+
+# Read the CSV file into a DataFrame, skipping the header row
+data_2022 = pd.read_csv('2022-uwa-cleaned.csv', skiprows=1)
+
+# Convert 'Date' column to datetime format
+data_2022['Date'] = pd.to_datetime(data_2022['Date'])
+
+# Convert 'Temperature' column to numeric values, ignoring non-numeric entries
+data_2022['Temperature'] = pd.to_numeric(data_2022['Temperature'], errors='coerce')
+
+# Convert Fahrenheit to Celsius
+data_2022['Temperature'] = (data_2022['Temperature'] - 32) * 5/9
+
+# Create temperature gradient colormap for 2022 data
+cmap_2022 = plt.cm.get_cmap('turbo')
+
+# Replace ignored values with NaN for 2022 data
+data_2022['Temperature'] = data_2022['Temperature'].where(data_2022['Temperature'].notna(), np.nan)
+
+# Plot the scatter plot with temperature gradient colors and adjusted opacity for 2022 data
+sc_2022 = ax2.scatter(data_2022['Date'], data_2022['Temperature'], c=data_2022['Temperature'], cmap=cmap_2022, alpha=0.7, edgecolors='none')
+ax2.set_ylabel('Temperature (°C)')
+ax2.set_title('2022 UWA Temperature')
+
+# Calculate statistics per date for 2022 data
+daily_stats_2022 = data_2022.groupby(data_2022['Date'].dt.date)['Temperature'].agg(['mean', 'median', lambda x: np.percentile(x, 25), lambda x: np.percentile(x, 75)])
+daily_stats_2022.columns = ['Mean', 'Median', '25th Percentile', '75th Percentile']
+
+# Plot trendlines per date for 2022 data
+ax2.plot(daily_stats_2022.index, daily_stats_2022['Mean'], color='red', linestyle='--', label='Mean')
+ax2.plot(daily_stats_2022.index, daily_stats_2022['Median'], color='green', linestyle='--', label='Median')
+ax2.plot(daily_stats_2022.index, daily_stats_2022['25th Percentile'], color='blue', linestyle='--', label='25th Percentile')
+ax2.plot(daily_stats_2022.index, daily_stats_2022['75th Percentile'], color='orange', linestyle='--', label='75th Percentile')
+
+# Add legend for 2022 data
+ax2.legend()
+
+# Set the x-axis limits and format for 2022 data
+start_date_2022 = pd.to_datetime('2022-06-01')
+end_date_2022 = pd.to_datetime('2022-11-01')
+ax2.set_xlim(start_date_2022, end_date_2022)
+ax2.xaxis.set_major_locator(mdates.MonthLocator())
+ax2.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+
+# Adjust the layout and spacing
+plt.tight_layout()
+
+# Display the plot
+plt.show()
