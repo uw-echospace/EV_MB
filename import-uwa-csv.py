@@ -32,26 +32,29 @@ def fetch_data():
         data = response.text
 
         # Write the data to a CSV file
-        with open(csv_file, "a", newline="") as file:
+        with open(csv_file, "w", newline="") as file:
             writer = csv.writer(file)
             for row in data.splitlines():
-                split_data = row.split(",")
-                writer.writerow(split_data)
+                if not row.startswith("Below is"):
+                    split_data = row.split(",")
+                    writer.writerow(split_data)
 
         print(f"Data fetched and saved successfully. File saved at: {csv_file}")
 
-def job():
-    print("Checking for new data...")
-    fetch_data()
-    print("Data fetch and save completed.")
+fetch_data()
 
-# Run the job immediately when you press "run"
-job()
+# def job():
+#     print("Checking for new data...")
+#     fetch_data()
+#     print("Data fetch and save completed.")
 
-# Schedule the job to run every hour
-schedule.every().hour.do(job)
+# # Run the job immediately when you press "run"
+# job()
 
-# Run the scheduler in an infinite loop
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# # Schedule the job to run every hour
+# schedule.every().hour.do(job)
+
+# # Run the scheduler in an infinite loop
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
