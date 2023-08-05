@@ -5,7 +5,7 @@ from matplotlib.ticker import MultipleLocator
 import numpy as np
 
 # Read the CSV file into a DataFrame, skipping the header row
-data = pd.read_csv('2023-uwa.csv', skiprows=1)
+data = pd.read_csv('2022-uwa.csv', skiprows=1)
 
 # Convert 'Date' column to datetime format
 data['Date'] = pd.to_datetime(data['Date'])
